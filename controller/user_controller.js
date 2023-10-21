@@ -171,7 +171,7 @@ const UserController = {
 
             transporter.sendMail(mailOptions, async (error, info) => {
                 if (error) {
-                    const response = { success: false };
+                    const response = { success: false, message: error.message };
                     return res.status(400).json(response);
                 }
                 else {
@@ -194,6 +194,23 @@ const UserController = {
     },
     verifyOtp: async function (req, res) {
         try {
+            email = req.body.email;
+            otp = req.body.otp;
+
+            const findUser = await OtpModel.findOne({ email });
+
+            if(!findUser) {
+                const response = { success: false, message: "otp not sent" };
+                return res.status(401).json(response);
+            }
+
+            if (findUser.otp != otp) {
+                const response = { success: false, message: "otp is wrong" };
+                return res.status(401).json(response);
+            }
+            await OtpModel.findOneAndDelete({ email: findUser.email })
+            const response = { success: true, message: "otp is right" };
+            return res.json(response);
 
         } catch (e) {
             const response = { success: false, message: e.message };

@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer')
+require('dotenv').config()
 
 function genarateToken(data) {
-    const token = jwt.sign({ _id: data }, process.env.SCRET_KEY)
+    const token = jwt.sign({ _id: data }, process.env.SECRET_KEY)
     return token;
 }
 
@@ -11,11 +12,11 @@ const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         type: "OAuth2",
-        user: "pradiptimbadiya@gmail.com",
-        pass: "pradip@8118",
-        clientId: '295805594505-bkc6q610hiqr9tgsa7ke28g6pepl6ta5.apps.googleusercontent.com',
-        clientSecret: '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',
-        refreshToken: '1//04orPP3C1mDrUCgYIARAAGAQSNwF-L9IrWF4xdYPCvPgExa4XB9rKpHld0kjHpVFlUq3pB2W0cvJMAzoGpgfANuNotNhwtEfwNcg'
+        user: process.env.UNAME,
+        pass: process.env.PASSWORD,
+        clientId: process.env.CLIENTID,
+        clientSecret: process.env.CLIENTSECRET,
+        refreshToken: process.env.REFRESHTOKEN
     },
 });
 
