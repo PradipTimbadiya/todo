@@ -3,8 +3,13 @@ const nodemailer = require('nodemailer')
 require('dotenv').config()
 
 function genarateToken(data) {
-    const token = jwt.sign({ _id: data }, process.env.SECRET_KEY)
+    const token = jwt.sign({ id: data }, process.env.SECRET_KEY)
     return token;
+}
+
+function verifyToken(token) {
+    const userToken = jwt.verify(token, process.env.SECRET_KEY)
+    return userToken;
 }
 
 
@@ -16,7 +21,8 @@ const transporter = nodemailer.createTransport({
         pass: process.env.PASSWORD,
         clientId: process.env.CLIENTID,
         clientSecret: process.env.CLIENTSECRET,
-        refreshToken: process.env.REFRESHTOKEN
+        refreshToken: process.env.REFRESHTOKEN,
+        expires      : 1494388182480
     },
 });
 
@@ -30,5 +36,6 @@ function generateOTP() {
 }
 
 module.exports.genarateToken = genarateToken;
+module.exports.verifyToken = verifyToken;
 module.exports.transporter = transporter;
 module.exports.generateOTP = generateOTP;

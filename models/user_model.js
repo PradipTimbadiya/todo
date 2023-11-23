@@ -32,11 +32,11 @@ const User = mongoose.Schema({
         type:[String],
         default:[]
     },
-    createdat:{
+    createdAt:{
         type:Date,
         default:Date.now()
     },
-    updatedat:{
+    updatedAt:{
         type:Date,
         default:Date.now()
     }

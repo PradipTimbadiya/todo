@@ -8,6 +8,7 @@ const UserController = {
         try {
             const data = req.body;
             const findUser = await UserModel.findOne({ email: data.email });
+            console.log(findUser);
             if (findUser) {
                 const response = { success: false, message: "Email is already exist" };
                 return res.status(401).json(response);
@@ -50,7 +51,7 @@ const UserController = {
 
             `
             transporter.sendMail({
-                from: "projectfirst276@gmail.com",
+                // from: "projectfirst276@gmail.com",
                 to: userData.email,
                 subject: "Todolist",
                 html: emailTemp
@@ -119,6 +120,30 @@ const UserController = {
             findUser.password = newPassword;
             await findUser.save();
             console.log(findUser);
+
+            const response = { success: true, message: "Password is change" };
+            return res.json(response);
+
+        } catch (e) {
+            const response = { success: false, message: e.message };
+            return res.status(400).json(response);
+        }
+    },
+    resetPassword: async function (req, res) {
+        try {
+            email = req.body.email;
+            newPassword = req.body.password;
+            
+            const findUser = await UserModel.findOne({ email });
+
+            if(!findUser)
+            {
+                     const response = { success: false, message: "User Not Exist" };
+                     return res.status(401).json(response);
+            }
+
+            findUser.password = newPassword;
+            await findUser.save();
 
             const response = { success: true, message: "Password is change" };
             return res.json(response);
