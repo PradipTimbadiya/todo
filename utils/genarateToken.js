@@ -12,7 +12,6 @@ function verifyToken(token) {
     return userToken;
 }
 
-
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

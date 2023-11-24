@@ -1,14 +1,14 @@
 const UserModel = require('../models/user_model');
 const OtpModel = require("../models/otp_model");
 const bcrypt = require("bcryptjs");
-const { genarateToken, transporter, generateOTP } = require('../utils/genarateToken');
+const { genarateToken, transporter, generateOTP} = require('../utils/genarateToken');
 
 const UserController = {
     signUp: async function (req, res) {
         try {
             const data = req.body;
             const findUser = await UserModel.findOne({ email: data.email });
-            console.log(findUser);
+
             if (findUser) {
                 const response = { success: false, message: "Email is already exist" };
                 return res.status(401).json(response);
@@ -242,6 +242,7 @@ const UserController = {
             return res.status(400).json(response);
         }
     }
+    
 }
 
 

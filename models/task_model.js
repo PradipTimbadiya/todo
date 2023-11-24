@@ -28,6 +28,10 @@ const Task=mongoose.Schema({
     image:{
         type:String,
         default:null
+    },
+    publicUrl:{
+        type:String,
+        default:null
     }
 })
 
