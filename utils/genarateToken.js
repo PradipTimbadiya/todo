@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer')
-require('dotenv').config()
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 function genarateToken(data) {
     const token = jwt.sign({ id: data }, process.env.SECRET_KEY)

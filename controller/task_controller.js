@@ -102,7 +102,7 @@ const TaskController = {
                 data: tasks.getData(),
                 message: "Task Updated Successfully"
             };
-            return res.json(response);
+            return res.status(200).json(response);
 
         }
         catch (e) {
@@ -158,14 +158,14 @@ const TaskController = {
             }
 
             let task = await TaskModel.findOne({ userId, _id: req.body.id });
-            console.log(task)
+            // console.log(task)
             if (task) {
                 task.isCompleted = req.body.isCompleted;
                 await task.save()
                 const response = {
                     success: true,
                     data: task.getData(),
-                    message: "Task Updated Successfully"
+                    message: "Task Completed"
                 };
                 return res.json(response);
             }

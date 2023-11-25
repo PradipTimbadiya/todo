@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express =require('express');
-const  morgan=require('morgan');
 const app=express();
 const port = process.env.PORT | 8000;
 const cors =require('cors');
@@ -14,7 +13,7 @@ app.get("/" , (req,res)=>{
     res.send('Hello')
 })
 
-app.use(morgan('dev'));
+
 app.use(cors())
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
