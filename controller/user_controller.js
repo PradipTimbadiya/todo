@@ -7,6 +7,9 @@ const UserController = {
     signUp: async function (req, res) {
         try {
             const data = req.body;
+            if (data.password === undefined) {
+                return res.status(401).json({ success: false, message: "Password is Required" });
+            }
             const findUser = await UserModel.findOne({ email: data.email });
 
             if (findUser) {
@@ -79,29 +82,49 @@ const UserController = {
         try {
             email = req.body.email;
             password = req.body.password;
-            const findUser = await UserModel.findOne({ email: email });
-
-            if (!findUser) {
-                const response = { success: false, message: "User Not Exist" };
-                return res.status(401).json(response);
+      
+            let data = { email, isLogin: false };
+            if (password === undefined) {
+              data.isLogin = true;
             }
-
+            const findUser = await UserModel.findOne(data);
+            if (!findUser) {
+              const response = { success: false, message: "User Not Exist" };
+              return res.status(401).json(response);
+            }
+      
+            if (password === undefined) {
+              const userData = findUser.getData();
+      
+              const userToken = genarateToken(findUser._id);
+              const response = {
+                success: true,
+                data: userData,
+                message: "SignIn successfully",
+                token: userToken,
+              };
+              return res.json(response);
+            }
             const matchPass = await bcrypt.compare(password, findUser.password);
             if (!matchPass) {
-                const response = { success: false, message: "Password is wrong" };
-                return res.status(401).json(response);
+              const response = { success: false, message: "Password is wrong" };
+              return res.status(401).json(response);
             }
-
+      
             const userData = findUser.getData();
-
+      
             const userToken = genarateToken(findUser._id);
-            const response = { success: true, data: userData, message: 'SignIn successfully', token: userToken };
+            const response = {
+              success: true,
+              data: userData,
+              message: "SignIn successfully",
+              token: userToken,
+            };
             return res.json(response);
-        }
-        catch (e) {
+          } catch (e) {
             const response = { success: false, message: e.message };
             return res.status(400).json(response);
-        }
+          }
     },
     changePassword: async function (req, res) {
         try {
@@ -241,7 +264,27 @@ const UserController = {
             const response = { success: false, message: e.message };
             return res.status(400).json(response);
         }
-    }
+    },
+    ssoCreate: async (req, res) => {
+        try {
+          const data = req.body;
+          const findUser = await UserModel.findOne({ email: data.email });
+    
+          if (findUser) {
+            const response = { success: false, message: "Email is already exist" };
+            return res.status(401).json(response);
+          }
+    
+          const user = new UserModel({ ...data, isLogin: true });
+          await user.save();
+    
+          const response = { success: true, message: "Successfully", data: user };
+          return res.status(200).json(response);
+        } catch (error) {
+          const response = { success: false, message: error.message };
+          return res.status(401).json(response);
+        }
+      },
     
 }
 

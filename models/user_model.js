@@ -21,8 +21,8 @@ const User = mongoose.Schema({
         }
     },
     password:{
-        type:String,
-        required:true
+        type:String
+        // required:true
     },
     image:{
         type:String,
@@ -39,6 +39,10 @@ const User = mongoose.Schema({
     updatedAt:{
         type:Date,
         default:Date.now()
+    },
+    isLogin:{
+        type:Boolean,
+        default:false
     }
 })
 

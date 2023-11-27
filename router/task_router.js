@@ -5,15 +5,15 @@ const {multer} = require('../middlewares/multer');
 
 const TaskController=require('../controller/task_controller');
 
-router.post("/insertTask" , multer.single('image') , TaskController.insertTask);
+router.post("/insert-task" , multer.single('image') , TaskController.insertTask);
 
-router.get("/getTask" , TaskController.getTask);
+router.get("/get-task" , TaskController.getTask);
 
-router.put("/updateTask" , TaskController.updateTask);
+router.put("/update-task" , TaskController.updateTask);
 
-router.delete("/deleteTask" , TaskController.deleteTask);
+router.delete("/delete-task" , TaskController.deleteTask);
 
-router.put("/checkBox" , TaskController.checkBox);
+router.put("/check-box" , TaskController.checkBox);
 
 
 module.exports = router

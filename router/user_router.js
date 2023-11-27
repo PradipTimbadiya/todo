@@ -6,17 +6,19 @@ const UserController = require('../controller/user_controller');
 
 
 
-router.post("/signUp" , UserController.signUp);
+router.post("/sign-up" , UserController.signUp);
 
-router.post("/signIn" , UserController.signIn);
+router.post("/sign-in" , UserController.signIn);
 
-router.post("/changePassword", UserController.changePassword);
+router.post("/change-password", UserController.changePassword);
 
-router.post("/resetPassword", UserController.resetPassword);
+router.post("/reset-password", UserController.resetPassword);
 
-router.post("/forgotPassword", UserController.forgotPassword);
+router.post("/forgot-password", UserController.forgotPassword);
 
-router.post("/verifyOtp", UserController.verifyOtp);
+router.post("/verify-otp", UserController.verifyOtp);
+
+router.post("/sso-create", UserController.ssoCreate);
 
 module.exports = router
 
