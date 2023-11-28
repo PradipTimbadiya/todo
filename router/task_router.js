@@ -5,6 +5,7 @@ const {multer} = require('../middlewares/multer');
 
 const TaskController=require('../controller/task_controller');
 
+
 router.post("/insert-task" , multer.single('image') , TaskController.insertTask);
 
 router.get("/get-task" , TaskController.getTask);

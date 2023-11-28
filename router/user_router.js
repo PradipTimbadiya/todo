@@ -4,8 +4,6 @@ const router = new express.Router();
 
 const UserController = require('../controller/user_controller');
 
-
-
 router.post("/sign-up" , UserController.signUp);
 
 router.post("/sign-in" , UserController.signIn);
@@ -19,6 +17,8 @@ router.post("/forgot-password", UserController.forgotPassword);
 router.post("/verify-otp", UserController.verifyOtp);
 
 router.post("/sso-create", UserController.ssoCreate);
+
+router.delete("/delete-user", UserController.deleteUser);
 
 module.exports = router
 

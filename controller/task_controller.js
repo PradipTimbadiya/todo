@@ -6,7 +6,7 @@ const { verifyToken } = require('../utils/genarateToken');
 const TaskController = {
     insertTask: async function (req, res) {
         try {
-            const token = req.headers['authorization'];
+            const token = req.headers['authorization']?.split(' ')[1];
             if (!token) {
                 return res.status(401).json({ success: false, message: "invalid user" });
             }
@@ -51,7 +51,7 @@ const TaskController = {
     },
     getTask: async function (req, res) {
         try {
-            const token = req.headers['authorization'];
+            const token = req.headers['authorization']?.split(' ')[1];
             if (!token) {
                 return res.status(401).json({ success: false, message: "invalid user" });
             }
@@ -81,7 +81,7 @@ const TaskController = {
     },
     updateTask: async function (req, res) {
         try {
-            const token = req.headers['authorization'];
+            const token = req.headers['authorization']?.split(' ')[1];
             if (!token) {
                 return res.status(401).json({ success: false, message: "invalid user" });
             }
@@ -97,9 +97,10 @@ const TaskController = {
 
             const data = req.body;
             const tasks = await TaskModel.findByIdAndUpdate(data.id, { $set: { ...data, updatedAt: Date.now() } }, { new: true });
+            const taskdata= tasks.getData();
             const response = {
                 success: true,
-                data: tasks.getData(),
+                data: taskdata,
                 message: "Task Updated Successfully"
             };
             return res.status(200).json(response);
@@ -112,7 +113,7 @@ const TaskController = {
     },
     deleteTask: async function (req, res) {
         try {
-            const token = req.headers['authorization'];
+            const token = req.headers['authorization']?.split(' ')[1];
             if (!token) {
                 return res.status(401).json({ success: false, message: "invalid user" });
             }
@@ -143,7 +144,7 @@ const TaskController = {
     },
     checkBox: async function (req, res) {
         try {
-            const token = req.headers['authorization'];
+            const token = req.headers['authorization']?.split(' ')[1];
             if (!token) {
                 return res.status(401).json({ success: false, message: "invalid user" });
             }

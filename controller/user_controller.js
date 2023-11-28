@@ -1,7 +1,8 @@
 const UserModel = require('../models/user_model');
 const OtpModel = require("../models/otp_model");
+const TaskModel = require("../models/task_model");
 const bcrypt = require("bcryptjs");
-const { genarateToken, transporter, generateOTP} = require('../utils/genarateToken');
+const { genarateToken, transporter, generateOTP,verifyToken} = require('../utils/genarateToken');
 
 const UserController = {
     signUp: async function (req, res) {
@@ -68,7 +69,7 @@ const UserController = {
             const response = {
                 success: true,
                 data: userData,
-                message: "New User Created",
+                message: "Signup Successfully",
                 token: userToken,
             };
             return res.json(response);
@@ -285,7 +286,30 @@ const UserController = {
           return res.status(401).json(response);
         }
       },
-    
+    deleteUser:async (req,res)=>{
+        try {
+            const token = req.headers['authorization']?.split(' ')[1];
+            if (!token) {
+                return res.status(401).json({ success: false, message: "invalid user" });
+            }
+            const userTokenData = verifyToken(token);
+            if (!userTokenData.id) {
+                return res.status(401).json({ success: false, message: "invalid user" });
+            }
+            const userId = userTokenData.id;
+            const user = await UserModel.findById(userId);
+            if (!user) {
+                return res.status(401).json({ success: false, message: "invalid user" });
+            }
+            await UserModel.findByIdAndDelete(userId);
+            await TaskModel.deleteMany({userId});
+            const response = { success: true, message: "Delete Successfully"};
+            return res.status(200).json(response);
+        } catch (error) {
+            const response = { success: false, message: error.message };
+            return res.status(400).json(response)
+        }
+    }
 }
 
 
