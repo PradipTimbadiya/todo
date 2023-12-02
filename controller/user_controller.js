@@ -90,31 +90,15 @@ const UserController = {
     },
     signIn: async function (req, res) {
         try {
-            email = req.body.email;
-            password = req.body.password;
+            const email = req.body.email;
+            const password = req.body.password;
 
-            let data = { email, isLogin: false };
-            if (password === undefined) {
-                data.isLogin = true;
-            }
-            const findUser = await UserModel.findOne(data);
+            const findUser = await UserModel.findOne({email});
             if (!findUser) {
                 const response = { success: false, message: "User Not Exist" };
                 return res.status(401).json(response);
             }
-
-            if (password === undefined) {
-                const userData = findUser.getData();
-
-                const userToken = genarateToken(findUser._id);
-                const response = {
-                    success: true,
-                    data: userData,
-                    message: "SignIn successfully",
-                    token: userToken,
-                };
-                return res.json(response);
-            }
+            console.log(findUser.password);
             const matchPass = await bcrypt.compare(password, findUser.password);
             if (!matchPass) {
                 const response = { success: false, message: "Password is wrong" };
