@@ -32,6 +32,10 @@ const Task=mongoose.Schema({
     publicUrl:{
         type:String,
         default:null
+    },
+    date:{
+        type:Date,
+        default:Date.now()
     }
 })
 
@@ -43,6 +47,7 @@ Task.methods.getData =function()
         description:this.description,
         isCompleted:this.isCompleted,
         image:this.image,
+        date:this.date,
         createdAt:this.createdAt,
         updatedAt:this.updatedAt,
     }

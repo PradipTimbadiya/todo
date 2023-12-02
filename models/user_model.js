@@ -4,6 +4,9 @@ const validator = require('validator');
 const bcrypt=require('bcryptjs');
 
 const User = mongoose.Schema({
+    id:{
+        type:String
+    },
     name:{
         type:String,
         required:true
@@ -43,6 +46,10 @@ const User = mongoose.Schema({
     isLogin:{
         type:Boolean,
         default:false
+    },
+    publicUrl:{
+        type:String,
+        default:null
     }
 })
 

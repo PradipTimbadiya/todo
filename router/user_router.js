@@ -1,10 +1,12 @@
 const express = require('express');
-const router = new express.Router();
+const router = express.Router();
+const passport = require('passport');
+const {multer} = require('../middlewares/multer');
 
 
 const UserController = require('../controller/user_controller');
 
-router.post("/sign-up" , UserController.signUp);
+router.post("/sign-up" , multer.single('image') , UserController.signUp);
 
 router.post("/sign-in" , UserController.signIn);
 
@@ -19,6 +21,15 @@ router.post("/verify-otp", UserController.verifyOtp);
 router.post("/sso-create", UserController.ssoCreate);
 
 router.delete("/delete-user", UserController.deleteUser);
+
+router.post("/google-login", UserController.googleUser);
+
+router.get("/user-data", UserController.userData);
+
+router.post("/change-profile",multer.single('image'), UserController.changeProfile);
+
+router.delete("/delete-profile", UserController.deleteProfile);
+
 
 module.exports = router
 

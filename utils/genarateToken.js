@@ -8,8 +8,12 @@ function genarateToken(data) {
 }
 
 function verifyToken(token) {
-    const userToken = jwt.verify(token, process.env.SECRET_KEY)
-    return userToken;
+    try {
+        const userToken = jwt.verify(token, process.env.SECRET_KEY)
+        return userToken;
+    } catch (error) {
+        return undefined;
+    }
 }
 
 const transporter = nodemailer.createTransport({

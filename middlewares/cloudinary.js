@@ -12,3 +12,7 @@ exports.uploads = async function uploads(file, folder) {
     const result = await cloudinary.uploader.upload(file, { folder: folder, overwrite: true })
     return result
 }
+exports.destroy = async function uploads(publicUrl) {
+    const result = await cloudinary.uploader.destroy(publicUrl)
+    return result
+}
