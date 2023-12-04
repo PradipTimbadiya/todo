@@ -287,7 +287,6 @@ const UserController = {
     googleUser: async function (req, res) {
         try {
             const token = req.body.token;
-            console.log(token);
             const ticket = await client.verifyIdToken({
                 idToken: token,
                 audience: process.env.CLIENTID
