@@ -1,3 +1,5 @@
 const mongoose=require('mongoose');
+require('dotenv').config();
 
-mongoose.connect("mongodb+srv://pradip:123@cluster0.d1eepxk.mongodb.net/To_Do").then(()=>{console.log('Connection Successfully')}).catch((e)=>{console.log(e)})
+
+mongoose.connect(process.env.ATLAS).then(()=>{console.log('Connection Successfully')}).catch((e)=>{console.log(e)})

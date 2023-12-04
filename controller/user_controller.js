@@ -92,7 +92,7 @@ const UserController = {
             const email = req.body.email;
             const password = req.body.password;
 
-            const findUser = await UserModel.findOne({email});
+            const findUser = await UserModel.findOne({email,isLogin:false});
             if (!findUser) {
                 const response = { success: false, message: "User Not Exist" };
                 return res.status(401).json(response);
@@ -308,7 +308,8 @@ const UserController = {
                 name: payload.name,
                 email: payload.email,
                 image: result.secure_url,
-                publicUrl: result.public_id
+                publicUrl: result.public_id,
+                isLogin: true
             });
             await newUser.save();
             const userData = newUser.getData();

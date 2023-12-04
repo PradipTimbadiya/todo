@@ -9,7 +9,8 @@ const options={
           version: '1.0.0',
         },
         servers:[{
-            url: 'https://todo-pt.onrender.com'
+            url: 'https://todo-pt.onrender.com',
+            url: 'http://localhost:8000'
         }]
     },
     apis:['swagger.js']

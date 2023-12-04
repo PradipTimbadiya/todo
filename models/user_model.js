@@ -61,7 +61,8 @@ User.methods.getData =function()
         name:this.name,
         email:this.email,
         image:this.image,
-        category:this.category
+        category:this.category,
+        isLogin:this.isLogin
     }
 }
 
