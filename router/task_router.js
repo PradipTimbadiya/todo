@@ -18,6 +18,5 @@ router.delete("/delete-task" , TaskController.deleteTask);
 
 router.put("/check-box" , TaskController.checkBox);
 
-router.get("/search-task/:key" , TaskController.searchTask);
 
 module.exports = router

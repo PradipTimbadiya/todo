@@ -70,13 +70,22 @@ app.use('/api-docs',swaggerui.serve,swaggerui.setup(swaggerSpec))
  *                      type: string
  *                  otp:
  *                      type: string
- *          ssocreate:
+ *          deleteuser:
  *              type: object
  *              properties:
- *                  name:
+ *                  password:
  *                      type: string
- *                  email:
+ *          googlelogin:
+ *              type: object
+ *              properties:
+ *                  token:
  *                      type: string
+ *          changeprofile:
+ *              type: object
+ *              properties:
+ *                  image:
+ *                      type: string
+ *                      format: binary
  */
 
 
@@ -182,22 +191,6 @@ app.use('/api-docs',swaggerui.serve,swaggerui.setup(swaggerSpec))
  *              description: otp is right 
  */
 
-/**
- * @swagger
- * /api/v1/sso-create:
- *  post:
- *      summary: create user with google
- *      description: create user with google
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#components/schemas/ssocreate'
- *      responses:
- *          200:
- *              description: user created 
- */
 
 /**
  * @swagger
@@ -207,9 +200,77 @@ app.use('/api-docs',swaggerui.serve,swaggerui.setup(swaggerSpec))
  *          - bearerAuth: []
  *      summary: delete user
  *      description: delete user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#components/schemas/deleteuser'
  *      responses:
  *          200:
  *              description: User deleted
+ */
+
+/**
+ * @swagger
+ * /api/v1/google-login:
+ *  post:
+ *      summary: google login user
+ *      description: google login user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#components/schemas/googlelogin'
+ *      responses:
+ *          200:
+ *              description: login successfully
+ */
+
+/**
+ * @swagger
+ * /api/v1/user-data:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: user data
+ *      description: user data
+ *      responses:
+ *          200:
+ *              description: User data
+ */
+
+/**
+ * @swagger
+ * /api/v1/change-profile:
+ *  post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: change profile pic
+ *      description: change profile pic
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              multipart/form-data:
+ *                  schema:
+ *                      $ref: '#components/schemas/changeprofile'
+ *      responses:
+ *          200:
+ *              description: change profile pic 
+ */
+
+/**
+ * @swagger
+ * /api/v1/delete-profile:
+ *  delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: delete profile pic
+ *      description: delete profile pic
+ *      responses:
+ *          200:
+ *              description: delete profile pic 
  */
 
 
@@ -276,6 +337,25 @@ app.use('/api-docs',swaggerui.serve,swaggerui.setup(swaggerSpec))
  *      responses:
  *          200:
  *              description: Todo added 
+ */
+
+/**
+ * @swagger
+ * /api/v1/get-task/{data}:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: show all todo
+ *      description: show all todo
+ *      parameters:
+ *          - in: path
+ *            name: data
+ *            description: Search data
+ *            schema:
+ *                type: string 
+ *      responses:
+ *          200:
+ *              description: all todo
  */
 
 /**

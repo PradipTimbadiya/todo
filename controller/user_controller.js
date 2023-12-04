@@ -64,7 +64,6 @@ const UserController = {
 
             `
             transporter.sendMail({
-                // from: "projectfirst276@gmail.com",
                 to: userData.email,
                 subject: "Todolist",
                 html: emailTemp
@@ -81,10 +80,10 @@ const UserController = {
                 message: "Signup Successfully",
                 token: userToken,
             };
-            return res.json(response);
+            return res.status(200).json(response);
         }
-        catch (e) {
-            const response = { success: false, message: e.message };
+        catch (error) {
+            const response = { success: false, message: error.message };
             return res.status(400).json(response)
         }
     },
@@ -98,7 +97,6 @@ const UserController = {
                 const response = { success: false, message: "User Not Exist" };
                 return res.status(401).json(response);
             }
-            console.log(findUser.password);
             const matchPass = await bcrypt.compare(password, findUser.password);
             if (!matchPass) {
                 const response = { success: false, message: "Password is wrong" };
@@ -114,9 +112,9 @@ const UserController = {
                 message: "SignIn successfully",
                 token: userToken,
             };
-            return res.json(response);
-        } catch (e) {
-            const response = { success: false, message: e.message };
+            return res.status(200).json(response);
+        } catch (error) {
+            const response = { success: false, message: error.message };
             return res.status(400).json(response);
         }
     },
@@ -136,13 +134,12 @@ const UserController = {
 
             findUser.password = newPassword;
             await findUser.save();
-            console.log(findUser);
 
             const response = { success: true, message: "Password is change" };
             return res.json(response);
 
-        } catch (e) {
-            const response = { success: false, message: e.message };
+        } catch (error) {
+            const response = { success: false, message: error.message };
             return res.status(400).json(response);
         }
     },
@@ -157,21 +154,14 @@ const UserController = {
                 const response = { success: false, message: "User Not Exist" };
                 return res.status(401).json(response);
             }
-            // const userOtp = await OtpModel.findOne({ email: findUser.email })
-            // // console.log(userOtp);
-            // if (!userOtp) {
-            //     const response = { success: false, message: "User Not Exist" };
-            //     return res.status(401).json(response);
-            // }
-            // await OtpModel.findOneAndDelete({ email: findUser.email })
             findUser.password = newPassword;
             await findUser.save();
 
             const response = { success: true, message: "Password is change" };
             return res.json(response);
 
-        } catch (e) {
-            const response = { success: false, message: e.message };
+        } catch (error) {
+            const response = { success: false, message: error.message };
             return res.status(400).json(response);
         }
     },
@@ -224,7 +214,6 @@ const UserController = {
                 else {
                     await OtpModel.findOneAndDelete({ email: findUser.email })
                     const user = new OtpModel({ email: findUser.email, otp: otp });
-                    console.log(user);
                     await user.save();
 
                     setTimeout(async () => {
@@ -235,8 +224,8 @@ const UserController = {
                     return res.json(response);
                 }
             });
-        } catch (e) {
-            const response = { success: false, message: e.message };
+        } catch (error) {
+            const response = { success: false, message: error.message };
             return res.status(400).json(response);
         }
     },
@@ -256,33 +245,13 @@ const UserController = {
                 const response = { success: false, message: "otp is wrong" };
                 return res.status(401).json(response);
             }
-            // await OtpModel.findOneAndDelete({ email: findUser.email })
+            await OtpModel.findOneAndDelete({ email: findUser.email })
             const response = { success: true, message: "otp is right" };
             return res.json(response);
 
-        } catch (e) {
-            const response = { success: false, message: e.message };
-            return res.status(400).json(response);
-        }
-    },
-    ssoCreate: async function (req, res) {
-        try {
-            const data = req.body;
-            const findUser = await UserModel.findOne({ email: data.email });
-
-            if (findUser) {
-                const response = { success: false, message: "Email is already exist" };
-                return res.status(401).json(response);
-            }
-
-            const user = new UserModel({ ...data, isLogin: true });
-            await user.save();
-
-            const response = { success: true, message: "Successfully", data: user };
-            return res.status(200).json(response);
         } catch (error) {
             const response = { success: false, message: error.message };
-            return res.status(401).json(response);
+            return res.status(400).json(response);
         }
     },
     deleteUser: async function (req, res) {
@@ -318,7 +287,7 @@ const UserController = {
     googleUser: async function (req, res) {
         try {
             const token = req.body.token;
-            // console.log(token);
+            console.log(token);
             const ticket = await client.verifyIdToken({
                 idToken: token,
                 audience: process.env.CLIENTID
@@ -411,8 +380,7 @@ const UserController = {
             }
             const userData = user.getData();
             const response = { success: true, data: userData };
-            return res.status(200).json(response)
-
+            return res.status(200).json(response);
 
         } catch (error) {
             const response = { success: false, message: error.message };
@@ -444,7 +412,6 @@ const UserController = {
             user.publicUrl = result.public_id;
             user.image = result.secure_url;
 
-
             await user.save();
             
             const userData = user.getData();
@@ -452,8 +419,7 @@ const UserController = {
             const response = {
                 success: true,
                 data: userData,
-                message: "Profile Picture Changed",
-
+                message: "Profile Picture Changed"
             };
             return res.status(200).json(response);
 
@@ -478,15 +444,12 @@ const UserController = {
                 return res.status(401).json({ success: false, message: "invalid user" });
             }
             
-            user.image=null;
-            if(user.image===null)
-            {
-            const unknownUser='https://res.cloudinary.com/dliioswvx/image/upload/v1701508421/profile_pic/unknown_hfqpjk.jpg';
-            user.image=unknownUser;
+            const nameFirstLetter = user.name.toLowerCase().slice(0, 1);
+            const url = publicUrl(nameFirstLetter);
+            user.image=url;
             user.publicUrl=null;
-            }
             await user.save();
-        
+
             const response = {
                 success: true,
                 message: "Profile Picture deleted",

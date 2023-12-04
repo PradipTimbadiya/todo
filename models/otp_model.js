@@ -5,7 +5,6 @@ const OTP =mongoose.Schema({
     email:{
         type:String,
         required:true,
-        // unique:true,
         validate(value)
         {
             if(!validator.isEmail(value))
@@ -15,8 +14,7 @@ const OTP =mongoose.Schema({
         }
     },
     otp:{
-        type:String,
-        // required:true,
+        type:String
     }
 
 });

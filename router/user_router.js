@@ -6,7 +6,7 @@ const {multer} = require('../middlewares/multer');
 
 const UserController = require('../controller/user_controller');
 
-router.post("/sign-up" , multer.single('image') , UserController.signUp);
+router.post("/sign-up" , UserController.signUp);
 
 router.post("/sign-in" , UserController.signIn);
 
@@ -17,8 +17,6 @@ router.post("/reset-password", UserController.resetPassword);
 router.post("/forgot-password", UserController.forgotPassword);
 
 router.post("/verify-otp", UserController.verifyOtp);
-
-router.post("/sso-create", UserController.ssoCreate);
 
 router.delete("/delete-user", UserController.deleteUser);
 
